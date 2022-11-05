@@ -1,26 +1,38 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text, View, StyleSheet, Button, TouchableOpacity, FlatList } from 'react-native'
 import Todo from "../components/Todo";
 import { Ionicons } from '@expo/vector-icons';
+import AddAndEditToDo from "../components/AddAndEditToDo"
 
-const ToDos : {id: string, todo: string}[] = [
-    {
-        id : "1",
-        todo: "Wash face"
-    },
-    {
-        id : "2",
-        todo: "Brush teeth"
-    },
-    {
-        id : "2",
-        todo: "Eat"
-    },
-]
 
 const ToDosScreen =  () => {
+    const [addEdit, setAddEdit] = useState<boolean>(false);
+    const [todos, setTodos] = useState<{id: string, todo: string}[]>([])
+    const [todoText, setTodoText] = useState<string>("");
 const renderItems = ({item} : {item : {id: string, todo: string}}) => {
-    return <Todo todoText={item.todo}/>
+    return <Todo todoText={item.todo} todoId={item.id} editTodo={addEditTodo} deleteTodo={deleteTodo}/>
+}
+
+const fillingText = (text : string) => {
+    setTodoText(text);
+}
+
+const addEditTodo = () => {
+    setTodoText("")
+    setAddEdit(true);
+}
+
+const addTodo = () => {
+    const id = (Math.random() * 2000).toString();
+    console.log(id)
+    setTodos([...todos, {id: id, todo: todoText}])
+    setAddEdit(false);
+}
+
+const deleteTodo = (id : string) => {
+    console.log("************* Deleting")
+    const filteredTodos = todos.filter(todo => todo.id !== id)
+    setTodos(filteredTodos)
 }
 
 
@@ -28,17 +40,18 @@ const renderItems = ({item} : {item : {id: string, todo: string}}) => {
       <View style={styles.container}>
         <View style={styles.header}>
             <Text style={styles.titleText}>ToDos: 3</Text>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity onPress={addEditTodo} style={styles.addButton}>
             <Ionicons name="add" size={24} color="white" />
             </TouchableOpacity>
         </View>
         <View style={styles.divider}/>
         <View style={styles.listView}>
             <FlatList
-                data={ToDos}
+                data={todos}
                 keyExtractor={item => item.id}
                 renderItem={renderItems}/>
         </View>
+        {addEdit? <AddAndEditToDo addTodo={addTodo} fillingText={fillingText} textValue={todoText}/> : null}
       </View>
     )
   }

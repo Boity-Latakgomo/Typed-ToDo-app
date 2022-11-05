@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { EvilIcons, AntDesign } from '@expo/vector-icons';
 
-const Todo =  ({todoText} : {todoText: string}) =>  {
+const Todo =  ({todoText, todoId, editTodo, deleteTodo} : {todoText: string, todoId : string, editTodo: any, deleteTodo: any}) =>  {
     return (
     <View style={styles.todo}>
         <Text style={styles.todoText}>{todoText}</Text>
-        <EvilIcons name="pencil" size={40} color="white" />
-        <AntDesign name="delete" size={28} color="white" />
+        <TouchableOpacity onPress={editTodo}>
+            <EvilIcons name="pencil" size={40} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => deleteTodo(todoId)}>
+            <AntDesign name="delete" size={28} color="white" />
+        </TouchableOpacity>
       </View>
     )
 }
