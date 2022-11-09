@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
 
-export const AddAndEditToDo = ({addTodo, fillingText, textValue} : any) => {
+export const AddAndEditToDo = ({saveTodo, fillingText, textValue, saveEditedTodo, IdValue} : any) => {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Add todo</Text>
+        <Text style={styles.title}>{IdValue ? "Edit todo" : "Add todo"}</Text>
         <TextInput value={textValue} 
             onChangeText={text => fillingText(text)}
             style={styles.input}/>
-        <TouchableOpacity onPress={addTodo} style={styles.button}>
-            <Text style={styles.buttonText}>Save</Text>
+        <TouchableOpacity onPress={IdValue? () => saveEditedTodo(IdValue) : saveTodo} style={styles.button}>
+            <Text style={styles.buttonText}>{IdValue ? "Edit" : "Save"}</Text>
         </TouchableOpacity>
       </View>
     )
